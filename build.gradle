@@ -13,8 +13,8 @@ repositories {
 }
 
 configurations {
-  carrot2
-  compileOnly.extendsFrom(carrot2)
+  bundled
+  implementation.extendsFrom(bundled)
 }
 
 ext {
@@ -31,7 +31,7 @@ dependencies {
     exclude group: "org.carrot2", module: "core"
   })
 
-  carrot2 "org.carrot2:carrot2-core:${versions.c2}"
+  compileOnly "org.carrot2:carrot2-core:${versions.c2}"
 
   implementation("org.apache.logging.log4j:log4j-slf4j18-impl:${versions.log4j}", {
     exclude group: "org.apache.logging.log4j", module: "log4j-core"
@@ -49,7 +49,6 @@ dependencies {
 
 distributions {
   main {
-    //distributionBaseName = 'someName'
     contents {
       from("src/main/assembly", {
         filesMatching("**/plugin-descriptor.properties", {
@@ -60,7 +59,7 @@ distributions {
         })
       })
 
-      from(configurations.runtimeClasspath - configurations.carrot2)
+      from(configurations.implementation)
       from jar.outputs
     }
   }
