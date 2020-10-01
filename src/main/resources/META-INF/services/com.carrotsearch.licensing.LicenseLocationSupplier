@@ -1,2 +1,3 @@
+com.carrotsearch.lingo3g.integrations.elasticsearch.ElasticsearchLicenseLocationSupplier
 com.carrotsearch.lingo3g.impl.SysPropertyLicenseLocationSupplier
 com.carrotsearch.lingo3g.impl.HomeDirLicenseLocationSupplier

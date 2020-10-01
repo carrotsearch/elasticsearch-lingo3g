@@ -4,6 +4,8 @@ plugins {
   id 'distribution'
 }
 
+// TODO: consistent lib. versions.
+
 version = '7.7.1'
 group = 'com.carrotsearch'
 
@@ -15,40 +17,63 @@ repositories {
 configurations {
   bundled
   implementation.extendsFrom(bundled)
+
+  lingo3g
+  compileOnly.extendsFrom(lingo3g)
 }
 
 ext {
   versions = [
       'es'   : '7.7.1',
-      'c2'   : '4.0.2',
+      'c2'   : '4.0.3',
       'l3g'  : '2.0.0-beta1',
       'log4j': '2.12.1'
   ]
 }
 
 dependencies {
-  implementation("com.carrotsearch.lingo3g:lingo3g:${versions.l3g}", {
+  lingo3g("com.carrotsearch.lingo3g:lingo3g:${versions.l3g}", {
     exclude group: "org.carrot2", module: "core"
   })
 
   compileOnly "org.carrot2:carrot2-core:${versions.c2}"
 
-  implementation("org.apache.logging.log4j:log4j-slf4j18-impl:${versions.log4j}", {
-    exclude group: "org.apache.logging.log4j", module: "log4j-core"
-    exclude group: "org.apache.logging.log4j", module: "log4j-api"
-  })
-
   compileOnly("org.apache.logging.log4j:log4j-core:${versions.log4j}")
+
   compileOnly("org.elasticsearch:elasticsearch:${versions.es}", {
     exclude group: "*"
   })
   compileOnly("org.elasticsearch:elasticsearch-x-content:${versions.es}", {
     exclude group: "*"
   })
+
+  bundled("org.apache.logging.log4j:log4j-slf4j18-impl:${versions.log4j}", {
+    exclude group: "org.apache.logging.log4j", module: "log4j-core"
+    exclude group: "org.apache.logging.log4j", module: "log4j-api"
+    exclude group: "org.slf4j"
+  })
 }
 
-distributions {
+distributions { DistributionContainer container ->
   main {
+    contents {
+      // And anything Lingo3G depends on but not Lingo3G itself.
+      from((configurations.lingo3g - configurations.runtimeClasspath), {
+        exclude "**/lingo3g*"
+      })
+    }
+  }
+
+  full {
+    contents {
+      // Include full Lingo3G, including binaries.
+      from((configurations.lingo3g - configurations.runtimeClasspath), {
+      })
+    }
+  }
+
+  // Configure common aspects.
+  configure([main, full]) {
     contents {
       from("src/main/assembly", {
         filesMatching("**/plugin-descriptor.properties", {
@@ -59,8 +84,15 @@ distributions {
         })
       })
 
-      from(configurations.implementation)
+      from("src/config", {
+        into 'config/'
+      })
+
+      // Include plugin classes and bundled JARs.
       from jar.outputs
+      from(configurations.bundled)
+
+      into '/'
     }
   }
 }
