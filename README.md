@@ -39,7 +39,7 @@ to accept such a prompt.
 Usage
 -----
 
-Instructions are identical to that of elasticsearch-carrot2, please refer
+Instructions are identical to that of [elasticsearch-carrot2](https://github.com/carrot2/elasticsearch-carrot2), please refer
 to that plugin's documentation.
 
 
