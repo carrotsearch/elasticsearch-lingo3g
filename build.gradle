@@ -1,0 +1,67 @@
+// This plugin's version (typically matches that of ES).
+plugins {
+  id 'java-library'
+  id 'distribution'
+}
+
+version = '7.7.1'
+group = 'com.carrotsearch'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+configurations {
+  carrot2
+  compileOnly.extendsFrom(carrot2)
+}
+
+ext {
+  versions = [
+      'es'   : '7.7.1',
+      'c2'   : '4.0.2',
+      'l3g'  : '2.0.0-beta1',
+      'log4j': '2.12.1'
+  ]
+}
+
+dependencies {
+  implementation("com.carrotsearch.lingo3g:lingo3g:${versions.l3g}", {
+    exclude group: "org.carrot2", module: "core"
+  })
+
+  carrot2 "org.carrot2:carrot2-core:${versions.c2}"
+
+  implementation("org.apache.logging.log4j:log4j-slf4j18-impl:${versions.log4j}", {
+    exclude group: "org.apache.logging.log4j", module: "log4j-core"
+    exclude group: "org.apache.logging.log4j", module: "log4j-api"
+  })
+
+  compileOnly("org.apache.logging.log4j:log4j-core:${versions.log4j}")
+  compileOnly("org.elasticsearch:elasticsearch:${versions.es}", {
+    exclude group: "*"
+  })
+  compileOnly("org.elasticsearch:elasticsearch-x-content:${versions.es}", {
+    exclude group: "*"
+  })
+}
+
+distributions {
+  main {
+    //distributionBaseName = 'someName'
+    contents {
+      from("src/main/assembly", {
+        filesMatching("**/plugin-descriptor.properties", {
+          filteringCharset = 'UTF-8'
+          expand([
+              'versions': versions
+          ])
+        })
+      })
+
+      from(configurations.runtimeClasspath - configurations.carrot2)
+      from jar.outputs
+    }
+  }
+}
