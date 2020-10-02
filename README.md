@@ -68,6 +68,14 @@ The plugin will require a valid license file in one of the following locations:
 * Elasticsearch user's home folder
 
 
+Compatibility
+-------------
+
+| plugin                | elasticsearch         | Lingo3G       |
+| ---                   |                   --- | ---           |
+| 7.7.1                 | 7.7.1                 |  2.0.0-beta1  |
+
+
 Usage
 -----
 
