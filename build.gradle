@@ -92,3 +92,112 @@ distributions { DistributionContainer container ->
     }
   }
 }
+
+
+configure(rootProject) {
+  apply plugin: 'maven-publish'
+  apply plugin: 'signing'
+
+  ext {
+    mavenBuildRepo = file("${buildDir}/maven")
+  }
+
+  java {
+    withJavadocJar()
+    withSourcesJar()
+  }
+
+  publishing {
+    repositories {
+      maven {
+        name = 'build'
+        url = mavenBuildRepo
+      }
+
+      maven {
+        name = 'sonatype'
+        url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+        credentials {
+          if (project.hasProperty('nexusUsername')) {
+            username project.nexusUsername
+          }
+          if (project.hasProperty('nexusPassword')) {
+            password project.nexusPassword
+          }
+        }
+      }
+    }
+
+    publications {
+      maven(MavenPublication) {
+        from components.java
+        group = project.group
+        artifactId = project.archivesBaseName
+
+        artifact distZip
+
+        pom {
+          name = project.name
+          description = project.description
+          artifactId 'elasticsearch-lingo3g'
+
+          url = 'https://github.com/carrotsearch/elasticsearch-lingo3g'
+          inceptionYear = "2020"
+
+          licenses {
+            license {
+              name = 'The Apache License, Version 2.0'
+              url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+          }
+
+          organization {
+            name = "Carrot Search s.c."
+            url = "https://www.carrotsearch.com"
+          }
+
+          scm {
+            connection = 'scm:git:https://github.com/carrotsearch/elasticsearch-lingo3g'
+            developerConnection = 'scm:git:git@github.com:carrotsearch/elasticsearch-lingo3g.git'
+            url = 'https://github.com/carrotsearch/elasticsearch-lingo3g'
+          }
+        }
+      }
+    }
+  }
+
+  signing {
+    sign publishing.publications.maven
+  }
+
+  task publishToSonatype() {
+    dependsOn publishMavenPublicationToSonatypeRepository
+  }
+
+  tasks.matching { it.path == ":publishMavenPublicationToBuildRepository" }.all {
+    doFirst {
+      delete mavenBuildRepo
+    }
+  }
+
+  task publishToLocal() {
+    group "Publishing"
+    description "Publish Maven artifacts locally to " + file(mavenBuildRepo)
+
+    dependsOn ":publishMavenPublicationToBuildRepository"
+  }
+
+  task sonatypeBundle(type: Zip) {
+    group "Publishing"
+    description "Prepare a sonatype bundle archive with all artifacts."
+
+    dependsOn publishToLocal
+
+    archiveFileName = "bundle-${project.archivesBaseName}-${project.version}.zip"
+    destinationDirectory = file("${buildDir}/sonatype")
+
+    from(mavenBuildRepo, {
+      exclude "**/maven-metadata*"
+    })
+  }
+}
