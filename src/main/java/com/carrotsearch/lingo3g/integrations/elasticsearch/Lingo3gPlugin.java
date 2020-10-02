@@ -1,15 +1,14 @@
-/*
- * Copyright (C) 2006-2020, Carrot Search s.c.
- * All rights reserved.
- *
- * This source code is confidential and proprietary.
- * Do not redistribute.
- */
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
 import com.carrotsearch.licensing.LicenseException;
 import com.carrotsearch.lingo3g.Lingo3GClusteringAlgorithm;
-import org.apache.logging.log4j.LogManager;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Stream;
 import org.carrot2.language.LanguageComponents;
 import org.carrot2.language.LanguageComponentsLoader;
 import org.elasticsearch.client.Client;
@@ -25,18 +24,9 @@ import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.watcher.ResourceWatcherService;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Stream;
-
 /**
- * Elasticsearch extension plugin adding Lingo3G
- * clustering algorithm support to
- * <a href="https://github.com/carrot2/elasticsearch-carrot2">elasticsearch-carrot2</a>.
+ * Elasticsearch extension plugin adding Lingo3G clustering algorithm support to <a
+ * href="https://github.com/carrot2/elasticsearch-carrot2">elasticsearch-carrot2</a>.
  */
 public class Lingo3gPlugin extends Plugin {
   public static final String PLUGIN_NAME = "elasticsearch-lingo3g";
@@ -63,10 +53,12 @@ public class Lingo3gPlugin extends Plugin {
 
     try {
       Lingo3GClusteringAlgorithm algorithm = new Lingo3GClusteringAlgorithm();
-      LanguageComponents english = LanguageComponents.loader().limitToAlgorithms(algorithm)
-          .limitToLanguages("English")
-          .load(LanguageComponentsLoader.loadProvidersFromSpi(getClass().getClassLoader()))
-          .language("English");
+      LanguageComponents english =
+          LanguageComponents.loader()
+              .limitToAlgorithms(algorithm)
+              .limitToLanguages("English")
+              .load(LanguageComponentsLoader.loadProvidersFromSpi(getClass().getClassLoader()))
+              .language("English");
       algorithm.cluster(Stream.empty(), english);
     } catch (IOException e) {
       throw new RuntimeException("Unexpected error testing for Lingo3G license.", e);

@@ -1,16 +1,7 @@
-/*
- * Copyright (C) 2006-2020, Carrot Search s.c.
- * All rights reserved.
- *
- * This source code is confidential and proprietary.
- * Do not redistribute.
- */
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
 import com.carrotsearch.licensing.LicenseLocation;
 import com.carrotsearch.lingo3g.impl.OptionalLicenseLocationSupplier;
-import org.apache.logging.log4j.LogManager;
-
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -18,10 +9,10 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.logging.log4j.LogManager;
 
 /**
- * An ES-specific license location supplier resolving licenses
- * from plugin configuration folders.
+ * An ES-specific license location supplier resolving licenses from plugin configuration folders.
  */
 public class LicenseLocationSupplier extends OptionalLicenseLocationSupplier {
   private static final AtomicReference<Path[]> globalLocations = new AtomicReference<>();

@@ -2,9 +2,12 @@
 plugins {
   id 'java-library'
   id 'distribution'
+
+  id "com.palantir.consistent-versions" version '1.26.1'
+  id 'com.diffplug.gradle.spotless' version "4.5.1" apply false
 }
 
-// TODO: consistent lib. versions.
+apply from: file('gradle/validation/spotless.gradle')
 
 version = '7.7.1'
 group = 'com.carrotsearch'
@@ -22,32 +25,23 @@ configurations {
   compileOnly.extendsFrom(lingo3g)
 }
 
-ext {
-  versions = [
-      'es'   : '7.7.1',
-      'c2'   : '4.0.3',
-      'l3g'  : '2.0.0-beta1',
-      'log4j': '2.12.1'
-  ]
-}
-
 dependencies {
-  lingo3g("com.carrotsearch.lingo3g:lingo3g:[${versions.l3g},)", {
+  lingo3g("com.carrotsearch.lingo3g:lingo3g", {
     exclude group: "org.carrot2", module: "core"
   })
 
-  compileOnly "org.carrot2:carrot2-core:${versions.c2}"
+  compileOnly "org.carrot2:carrot2-core"
 
-  compileOnly("org.apache.logging.log4j:log4j-core:${versions.log4j}")
+  compileOnly("org.apache.logging.log4j:log4j-core")
 
-  compileOnly("org.elasticsearch:elasticsearch:${versions.es}", {
+  compileOnly("org.elasticsearch:elasticsearch", {
     exclude group: "*"
   })
-  compileOnly("org.elasticsearch:elasticsearch-x-content:${versions.es}", {
+  compileOnly("org.elasticsearch:elasticsearch-x-content", {
     exclude group: "*"
   })
 
-  bundled("org.apache.logging.log4j:log4j-slf4j18-impl:${versions.log4j}", {
+  bundled("org.apache.logging.log4j:log4j-slf4j18-impl", {
     exclude group: "org.apache.logging.log4j", module: "log4j-core"
     exclude group: "org.apache.logging.log4j", module: "log4j-api"
     exclude group: "org.slf4j"
@@ -79,7 +73,9 @@ distributions { DistributionContainer container ->
         filesMatching("**/plugin-descriptor.properties", {
           filteringCharset = 'UTF-8'
           expand([
-              'versions': versions
+              'versions': [
+                  'es': { -> getVersion('org.elasticsearch:elasticsearch') }
+              ]
           ])
         })
       })
