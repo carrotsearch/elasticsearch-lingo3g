@@ -11,6 +11,7 @@ apply from: file('gradle/validation/spotless.gradle')
 
 version = '7.7.1'
 group = 'com.carrotsearch'
+description = "Search results clustering plugin for Elasticsearch (Lingo3G)"
 
 repositories {
   mavenLocal()
