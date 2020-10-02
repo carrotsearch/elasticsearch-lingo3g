@@ -2,6 +2,15 @@ package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
 import com.carrotsearch.licensing.LicenseException;
 import com.carrotsearch.lingo3g.Lingo3GClusteringAlgorithm;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 import org.carrot2.language.LanguageComponents;
 import org.carrot2.language.LanguageComponentsLoader;
 import org.carrot2.language.LanguageComponentsProvider;
@@ -17,16 +26,6 @@ import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.watcher.ResourceWatcherService;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * Elasticsearch extension plugin adding Lingo3G clustering algorithm support to <a
