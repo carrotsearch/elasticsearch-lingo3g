@@ -3,6 +3,9 @@ grant {
   permission java.lang.RuntimePermission "getClassLoader";
   permission java.lang.RuntimePermission "setContextClassLoader";
 
+  // Required to get language resources from SPIs properly.
+  permission java.lang.RuntimePermission "getClassLoader";
+
   // Required to scan user home for licenses.
   permission java.io.FilePermission "${user.home}${/}*", "read";
   permission java.io.FilePermission "${user.home}", "read";

@@ -2,15 +2,9 @@ package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
 import com.carrotsearch.licensing.LicenseException;
 import com.carrotsearch.lingo3g.Lingo3GClusteringAlgorithm;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Stream;
 import org.carrot2.language.LanguageComponents;
 import org.carrot2.language.LanguageComponentsLoader;
+import org.carrot2.language.LanguageComponentsProvider;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
 import org.elasticsearch.cluster.service.ClusterService;
@@ -23,6 +17,16 @@ import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.watcher.ResourceWatcherService;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Elasticsearch extension plugin adding Lingo3G clustering algorithm support to <a
@@ -51,13 +55,29 @@ public class Lingo3gPlugin extends Plugin {
     LicenseLocationSupplier.setGlobalLocations(
         new Path[] {configPath.toAbsolutePath(), pluginPath.toAbsolutePath()});
 
+    checkLicense();
+
+    return Collections.emptyList();
+  }
+
+  /** Early license check. */
+  private void checkLicense() {
     try {
       Lingo3GClusteringAlgorithm algorithm = new Lingo3GClusteringAlgorithm();
+
+      Map<String, List<LanguageComponentsProvider>> providers =
+          AccessController.doPrivileged(
+              (PrivilegedAction<Map<String, List<LanguageComponentsProvider>>>)
+                  () ->
+                      LanguageComponentsLoader.loadProvidersFromSpi(
+                          getClass().getClassLoader(),
+                          LanguageComponentsProvider.class.getClassLoader()));
+
       LanguageComponents english =
           LanguageComponents.loader()
               .limitToAlgorithms(algorithm)
               .limitToLanguages("English")
-              .load(LanguageComponentsLoader.loadProvidersFromSpi(getClass().getClassLoader()))
+              .load(providers)
               .language("English");
       algorithm.cluster(Stream.empty(), english);
     } catch (IOException e) {
@@ -65,8 +85,6 @@ public class Lingo3gPlugin extends Plugin {
     } catch (LicenseException e) {
       throw new RuntimeException("Lingo3G license problem detected: " + e.getMessage());
     }
-
-    return Collections.emptyList();
   }
 
   private void hackInitSlf4j() {
