@@ -5,9 +5,9 @@ This plugin adds on-the-fly text clustering capability
 to an Elasticsearch instance.
 
 Note this is an *extension* plugin, it requires 
-elasticsearch-carrot2 plugin to be installed independently
-and just adds Carrot Search Lingo3G support to 
-elasticsearch-carrot2.
+[elasticsearch-carrot2](https://github.com/carrot2/elasticsearch-carrot2)
+plugin to be installed independently and just adds Carrot Search 
+Lingo3G algorithm support.
 
 
 Installation
