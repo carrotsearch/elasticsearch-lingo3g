@@ -156,6 +156,19 @@ configure(rootProject) {
             url = "https://www.carrotsearch.com"
           }
 
+          developers {
+            developer {
+              id = 'stanislaw.osinski'
+              name = 'Stanisław Osiński'
+              email = 'stanislaw.osinski@carrotsearch.com'
+            }
+            developer {
+              id = 'dawid.weiss'
+              name = 'Dawid Weiss'
+              email = 'dawid.weiss@carrotsearch.com'
+            }
+          }
+
           scm {
             connection = 'scm:git:https://github.com/carrotsearch/elasticsearch-lingo3g'
             developerConnection = 'scm:git:git@github.com:carrotsearch/elasticsearch-lingo3g.git'
