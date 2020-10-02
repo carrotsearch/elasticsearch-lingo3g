@@ -7,6 +7,11 @@
  */
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
+import com.carrotsearch.licensing.LicenseException;
+import com.carrotsearch.lingo3g.Lingo3GClusteringAlgorithm;
+import org.apache.logging.log4j.LogManager;
+import org.carrot2.language.LanguageComponents;
+import org.carrot2.language.LanguageComponentsLoader;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
 import org.elasticsearch.cluster.service.ClusterService;
@@ -20,11 +25,13 @@ import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.watcher.ResourceWatcherService;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 /**
  * Elasticsearch extension plugin adding Lingo3G
@@ -53,6 +60,19 @@ public class Lingo3gPlugin extends Plugin {
     Path pluginPath = environment.configFile().resolve(PLUGIN_NAME);
     LicenseLocationSupplier.setGlobalLocations(
         new Path[] {configPath.toAbsolutePath(), pluginPath.toAbsolutePath()});
+
+    try {
+      Lingo3GClusteringAlgorithm algorithm = new Lingo3GClusteringAlgorithm();
+      LanguageComponents english = LanguageComponents.loader().limitToAlgorithms(algorithm)
+          .limitToLanguages("English")
+          .load(LanguageComponentsLoader.loadProvidersFromSpi(getClass().getClassLoader()))
+          .language("English");
+      algorithm.cluster(Stream.empty(), english);
+    } catch (IOException e) {
+      throw new RuntimeException("Unexpected error testing for Lingo3G license.", e);
+    } catch (LicenseException e) {
+      throw new RuntimeException("Lingo3G license problem detected: " + e.getMessage());
+    }
 
     return Collections.emptyList();
   }
