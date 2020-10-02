@@ -32,7 +32,7 @@ ext {
 }
 
 dependencies {
-  lingo3g("com.carrotsearch.lingo3g:lingo3g:${versions.l3g}", {
+  lingo3g("com.carrotsearch.lingo3g:lingo3g:[${versions.l3g},)", {
     exclude group: "org.carrot2", module: "core"
   })
 

@@ -7,8 +7,6 @@
  */
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
 import org.elasticsearch.cluster.service.ClusterService;
@@ -28,10 +26,13 @@ import java.security.PrivilegedAction;
 import java.util.Collection;
 import java.util.Collections;
 
-public class ElasticsearchLingo3GPlugin extends Plugin {
+/**
+ * Elasticsearch extension plugin adding Lingo3G
+ * clustering algorithm support to
+ * <a href="https://github.com/carrot2/elasticsearch-carrot2">elasticsearch-carrot2</a>.
+ */
+public class Lingo3gPlugin extends Plugin {
   public static final String PLUGIN_NAME = "elasticsearch-lingo3g";
-
-  private final Logger logger = LogManager.getLogger(this.getClass());
 
   @Override
   public Collection<Object> createComponents(
@@ -50,8 +51,7 @@ public class ElasticsearchLingo3GPlugin extends Plugin {
 
     Path configPath = environment.configFile();
     Path pluginPath = environment.configFile().resolve(PLUGIN_NAME);
-    logger.info("Lingo3G resources at " + pluginPath.toAbsolutePath());
-    ElasticsearchLicenseLocationSupplier.setGlobalLocations(
+    LicenseLocationSupplier.setGlobalLocations(
         new Path[] {configPath.toAbsolutePath(), pluginPath.toAbsolutePath()});
 
     return Collections.emptyList();

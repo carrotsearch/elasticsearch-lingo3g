@@ -9,17 +9,25 @@ package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
 import com.carrotsearch.licensing.LicenseLocation;
 import com.carrotsearch.lingo3g.impl.OptionalLicenseLocationSupplier;
+import org.apache.logging.log4j.LogManager;
+
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class ElasticsearchLicenseLocationSupplier extends OptionalLicenseLocationSupplier {
+/**
+ * An ES-specific license location supplier resolving licenses
+ * from plugin configuration folders.
+ */
+public class LicenseLocationSupplier extends OptionalLicenseLocationSupplier {
   private static final AtomicReference<Path[]> globalLocations = new AtomicReference<>();
   private final AtomicReference<Path[]> locations = new AtomicReference<>();
 
-  public ElasticsearchLicenseLocationSupplier() {}
+  public LicenseLocationSupplier() {}
 
   @Override
   public List<LicenseLocation> licenses() {
@@ -46,5 +54,12 @@ public class ElasticsearchLicenseLocationSupplier extends OptionalLicenseLocatio
               + ") while attempting to change it to: "
               + Arrays.toString(locations));
     }
+
+    LogManager.getLogger(LicenseLocationSupplier.class)
+        .info(
+            "Lingo3G license lookup locations at: {}",
+            Stream.of(locations)
+                .map(path -> path.toAbsolutePath().toString())
+                .collect(Collectors.joining(", ")));
   }
 }

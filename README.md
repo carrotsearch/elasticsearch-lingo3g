@@ -9,45 +9,78 @@ Note this is an *extension* plugin, it requires
 plugin to be installed independently and just adds Carrot Search 
 Lingo3G algorithm support.
 
+You must own Lingo3G license and have access to its binary
+distribution to build and run the plugin. 
+
 
 Installation
 ------------
 
-In order to install a stable version of the plugin, 
-run ElasticSearch's `plugin` utility (remember to pick the
-ES-compatible version of the plugin from the table below!).
+The plugin can be built and installed from sources (preferable)
+or by adding Lingo3G JAR to prebuilt plugin binaries and installing
+it afterward.
 
-    bin/elasticsearch-plugin install com.carrotsearch:elasticsearch-lingo3g:(es-version)
+To install from sources, install Lingo3G POM in
+your local Maven repository first, according to the instructions 
+available with Lingo3G distribution.
 
-To install from sources (master branch), install Lingo3G POM in
-your local Maven repository first, then run:
+Elasticsearch will only run plugins that have been built *exactly*
+against the given version of its API. Open build.gradle and note
+which version of ES the plugin is configured to compile against:
+
+    ext {
+      versions = [
+        'es'   : '7.7.1',
+
+You can adjust the version to compile against. Then build the plugin:
 
     ./gradlew clean build
 
-and install with:
+and install in Elasticsearch with:
 
     Linux:
-    bin/elasticsearch-plugin install file:/.../(plugin)/build/distributions/*.zip
+    bin/elasticsearch-plugin install file:/.../(plugin)/build/distributions/elasticsearch-lingo3g-full-*.zip
 
     Windows:
-    bin\elasticsearch-plugin install file:///c:/.../(plugin)/build/distributions/*.zip
+    bin\elasticsearch-plugin install file:///c:/.../(plugin)/build/distributions/elasticsearch-lingo3g-full-*.zip
 
-The plugin will display a popup to request additional permissions - you have 
-to accept such a prompt.
+The installer will display a popup to request additional permissions - you have 
+to accept this request, otherwise the plugin will not be installed.
+
+Alternatively, you can also fetch and modify plugin binaries from 
+[Maven Central](https://repo1.maven.org/maven2/com/carrotsearch/elasticsearch-lingo3g/).
+
+Once the ZIP distribution of the plugin is downloaded, you will have to add Lingo3G JAR
+to the archive, then proceed with `elasticsearch-plugin` installation above.
+
+Each plugin binary matches the corresponding Elasticsearch version it was compiled against.
+We do *not* publish binaries for each and every version of ES so you may have to recompile
+from sources from time to time.
+
+
+Lingo3G license
+---------------
+
+The plugin will require a valid license file in one of the following locations:
+
+* `${es-home}/config/`
+* `${es-home}/elasticsearch-lingo3g/`
+* Elasticsearch user's home folder
 
 
 Usage
 -----
 
-Instructions are identical to that of [elasticsearch-carrot2](https://github.com/carrot2/elasticsearch-carrot2), please refer
-to that plugin's documentation.
+Instructions are identical to that of [elasticsearch-carrot2](https://github.com/carrot2/elasticsearch-carrot2), 
+please refer to that plugin's documentation.
 
 
 License
 -------
 
-This software is licensed under the Apache 2 license. Full text
+This plugin is licensed under the Apache 2 license. Full text
 of the license is in the repository (`LICENSE.txt`).
 
 Lingo3G is commercial, proprietary software and is not included in 
-this bundle.
+this bundle. Send an e-mail request to info@carrotsearch.com for
+an evaluation license. 
