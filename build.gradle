@@ -9,7 +9,7 @@ plugins {
 
 apply from: file('gradle/validation/spotless.gradle')
 
-version = '7.8.1'
+version = '7.9.2'
 group = 'com.carrotsearch'
 description = "Search results clustering plugin for Elasticsearch (Lingo3G)"
 
@@ -116,6 +116,11 @@ configure(rootProject) {
     mavenBuildRepo = file("${buildDir}/maven")
   }
 
+  // Do not generate gradle metadata files.
+  tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+  }
+
   java {
     withJavadocJar()
     withSourcesJar()
@@ -189,6 +194,16 @@ configure(rootProject) {
             url = 'https://github.com/carrotsearch/elasticsearch-lingo3g'
           }
         }
+
+        pom({
+          // Remove dependencyManagement section created by a combination of
+          // Palantir and the publishing plugin.
+          //
+          // https://github.com/palantir/gradle-consistent-versions/issues/550
+          withXml {
+            asNode().dependencyManagement.replaceNode {}
+          }
+        })
       }
     }
   }
