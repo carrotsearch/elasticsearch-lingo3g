@@ -210,8 +210,7 @@ configure(rootProject) {
     archiveFileName = "bundle-${project.archivesBaseName}-${project.version}.zip"
     destinationDirectory = file("${buildDir}/sonatype")
 
-    from(mavenBuildRepo, {
-      exclude "**/maven-metadata*"
+    from(file("${mavenBuildRepo}/com/carrotsearch/elasticsearch-lingo3g/${project.version}/"), {
     })
   }
 }
