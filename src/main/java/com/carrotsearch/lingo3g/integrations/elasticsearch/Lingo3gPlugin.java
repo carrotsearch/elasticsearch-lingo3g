@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import org.carrot2.language.LanguageComponents;
 import org.carrot2.language.LanguageComponentsLoader;
@@ -22,6 +23,7 @@ import org.elasticsearch.common.xcontent.NamedXContentRegistry;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.NodeEnvironment;
 import org.elasticsearch.plugins.Plugin;
+import org.elasticsearch.repositories.RepositoriesService;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.watcher.ResourceWatcherService;
@@ -45,7 +47,8 @@ public class Lingo3gPlugin extends Plugin {
       Environment environment,
       NodeEnvironment nodeEnvironment,
       NamedWriteableRegistry namedWriteableRegistry,
-      IndexNameExpressionResolver indexNameExpressionResolver) {
+      IndexNameExpressionResolver indexNameExpressionResolver,
+      Supplier<RepositoriesService> repositoriesServiceSupplier) {
     // A hack to initialize slf4j bindings properly.
     hackInitSlf4j();
 

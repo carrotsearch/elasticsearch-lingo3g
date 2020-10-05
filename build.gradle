@@ -9,7 +9,7 @@ plugins {
 
 apply from: file('gradle/validation/spotless.gradle')
 
-version = '7.7.1'
+version = '7.8.1'
 group = 'com.carrotsearch'
 description = "Search results clustering plugin for Elasticsearch (Lingo3G)"
 
@@ -48,6 +48,19 @@ dependencies {
     exclude group: "org.slf4j"
   })
 }
+
+task checkEsVersionConsistent() {
+  dependsOn configurations.runtimeClasspath
+  doFirst {
+    def esVersion = getVersion("org.elasticsearch:elasticsearch")
+    if (!project.version.startsWith(esVersion)) {
+      throw new GradleException("Project version should start with the corresponding " +
+          "ES version (${esVersion}): ${project.version}")
+    }
+  }
+}
+
+jar.dependsOn checkEsVersionConsistent
 
 distributions { DistributionContainer container ->
   main {
