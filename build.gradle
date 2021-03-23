@@ -116,7 +116,7 @@ task buildOssPlugin(type: Zip) {
   dependsOn tasks.getByName("bundlePlugin")
 
   archiveFileName = "${archivesBaseName}-${project.version}-oss.zip"
-  destinationDir file("${buildDir}/distributions")
+  destinationDir file("${buildDir}/distributions-oss")
 
   from(zipTree(tasks.getByName("bundlePlugin").outputs.files.singleFile), {
     exclude "**/lingo3g-*"

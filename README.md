@@ -42,10 +42,10 @@ Then build the plugin:
 and install in Elasticsearch with:
 
     Linux:
-    bin/elasticsearch-plugin install file:/.../(plugin)/build/distributions/elasticsearch-lingo3g-full-*.zip
+    bin/elasticsearch-plugin install file:/.../(plugin)/build/distributions/elasticsearch-lingo3g-*.zip
 
     Windows:
-    bin\elasticsearch-plugin install file:///c:/.../(plugin)/build/distributions/elasticsearch-lingo3g-full-*.zip
+    bin\elasticsearch-plugin install file:///c:/.../(plugin)/build/distributions/elasticsearch-lingo3g-*.zip
 
 The installer will display a popup to request additional permissions - you have 
 to accept this request, otherwise the plugin will not be installed.
