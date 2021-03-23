@@ -1,3 +1,4 @@
+
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
 import com.carrotsearch.licensing.LicenseException;
@@ -33,7 +34,7 @@ import org.slf4j.LoggerFactory;
  * Elasticsearch extension plugin adding Lingo3G clustering algorithm support to <a
  * href="https://github.com/carrot2/elasticsearch-carrot2">elasticsearch-carrot2</a>.
  */
-public class Lingo3gPlugin extends Plugin {
+public class Lingo3GPlugin extends Plugin {
   public static final String PLUGIN_NAME = "elasticsearch-lingo3g";
 
   @Override

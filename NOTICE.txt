@@ -1,2 +1,2 @@
 Elasticsearch-Lingo3G
-Copyright 2020 Carrot Search s.c.
+Copyright 2020-2021 Carrot Search s.c.

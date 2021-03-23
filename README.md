@@ -25,13 +25,17 @@ your local Maven repository first, according to the instructions
 available with Lingo3G distribution.
 
 Elasticsearch will only run plugins that have been built *exactly*
-against the given version of its API. Open `versions.props` and adjust
-the version of ES and Lingo3G the plugin will be compiled against:
+against the given version of its API. Open `build.gradle` and adjust
+the version of Elasticsearch, elasticsearch-carrot2 plugin and 
+Lingo3G the extension plugin will be compiled against:
 
-    com.carrotsearch.lingo3g:lingo3g = [2.0.*,)
-    org.elasticsearch:* = 7.7.1
+    localversions = [
+        es       : "7.11.2",
+        c2plugin : "7.11.2",
+        l3g      : "2.0.0-beta1"
+    ]
 
-You can adjust the version to compile against. Then build the plugin:
+Then build the plugin:
 
     ./gradlew clean build
 
