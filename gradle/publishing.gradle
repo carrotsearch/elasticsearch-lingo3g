@@ -37,7 +37,10 @@ configure(rootProject) {
 
         artifact sourcesJar
         artifact javadocJar
-        artifact bundlePlugin
+
+        configurations.bundleOssPlugin.allArtifacts.all { PublishArtifact ossArtifact ->
+          artifact ossArtifact
+        }
 
         pom {
           name = esplugin.name

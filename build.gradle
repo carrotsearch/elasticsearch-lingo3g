@@ -51,7 +51,7 @@ ext {
 
 esplugin {
   name 'elasticsearch-lingo3g'
-  description "Lingo3G ${localversions.l3g} Clustering Algorithm for Elasticsearch ${localversions.es} (elasticsearch-carrot2 plugin extension)"
+  description "Lingo3G Clustering Algorithm Extension for elasticsearch-carrot2 plugin (Linog3G: ${localversions.l3g}, ES: ${localversions.es} elasticsearch-carrot2: ${localversions.c2plugin})"
   classname 'com.carrotsearch.lingo3g.integrations.elasticsearch.Lingo3GPlugin'
   extendedPlugins = ['elasticsearch-carrot2']
 }
@@ -64,7 +64,7 @@ configurations {
   lingo3g
   implementation.extendsFrom(lingo3g)
 
-  ossPlugin
+  bundleOssPlugin
 }
 
 dependencies {
@@ -126,7 +126,7 @@ task buildOssPlugin(type: Zip) {
 assemble.dependsOn buildOssPlugin
 
 artifacts {
-  ossPlugin tasks.buildOssPlugin
+  bundleOssPlugin tasks.buildOssPlugin
 }
 
 // If no Lingo3G license is specified, skip the tests.
@@ -143,9 +143,9 @@ tasks.matching { it.name in ["javaRestTest"] }.all {
   }
 }
 
-// TODO: real tests
 // TODO: publishing [review pom]
 // TODO: publish ES plugins for recent versions.
+// TODO: resources
 
 // Configure publishing.
 apply from: file('gradle/publishing.gradle')
