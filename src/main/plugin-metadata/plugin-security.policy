@@ -1,8 +1,4 @@
 grant {
-  // Required to set up slf4j SPI properly.
-  permission java.lang.RuntimePermission "getClassLoader";
-  permission java.lang.RuntimePermission "setContextClassLoader";
-
   // Required to get language resources from SPIs properly.
   permission java.lang.RuntimePermission "getClassLoader";
 

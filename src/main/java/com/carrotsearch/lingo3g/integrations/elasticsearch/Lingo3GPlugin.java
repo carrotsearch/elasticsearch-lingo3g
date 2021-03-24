@@ -2,8 +2,6 @@
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
 import java.nio.file.Path;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Supplier;
@@ -19,7 +17,6 @@ import org.elasticsearch.repositories.RepositoriesService;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.watcher.ResourceWatcherService;
-import org.slf4j.LoggerFactory;
 
 /**
  * Elasticsearch extension plugin adding Lingo3G clustering algorithm support to <a
@@ -41,9 +38,6 @@ public class Lingo3GPlugin extends Plugin {
       NamedWriteableRegistry namedWriteableRegistry,
       IndexNameExpressionResolver indexNameExpressionResolver,
       Supplier<RepositoriesService> repositoriesServiceSupplier) {
-    // A hack to initialize slf4j bindings properly.
-    hackInitSlf4j();
-
     try {
       Path configPath = environment.configFile();
       Path pluginPath = environment.configFile().resolve(PLUGIN_NAME);
@@ -58,20 +52,5 @@ public class Lingo3GPlugin extends Plugin {
     }
 
     return Collections.emptyList();
-  }
-
-  private void hackInitSlf4j() {
-    AccessController.doPrivileged(
-        (PrivilegedAction<Void>)
-            () -> {
-              ClassLoader cl = Thread.currentThread().getContextClassLoader();
-              try {
-                Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-                LoggerFactory.getLogger(this.getClass());
-              } finally {
-                Thread.currentThread().setContextClassLoader(cl);
-              }
-              return null;
-            });
   }
 }
