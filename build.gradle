@@ -143,9 +143,5 @@ tasks.matching { it.name in ["javaRestTest"] }.all {
   }
 }
 
-// TODO: publishing [review pom]
-// TODO: publish ES plugins for recent versions.
-// TODO: resources
-
 // Configure publishing.
 apply from: file('gradle/publishing.gradle')
