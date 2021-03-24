@@ -144,7 +144,7 @@ tasks.matching { it.name in ["javaRestTest"] }.all {
 }
 
 // TODO: real tests
-// TODO: publishing
+// TODO: publishing [review pom]
 // TODO: publish ES plugins for recent versions.
 
 // Configure publishing.
