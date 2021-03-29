@@ -80,6 +80,7 @@ Compatibility
 
 | plugin                | elasticsearch         | Lingo3G       |
 | ---                   |                   --- | ---           |
+| 7.12.0                | 7.12.0                |  2.0.0-beta2  |
 | 7.11.2                | 7.11.2                |  2.0.0-beta1  |
 | 7.7.1                 | 7.7.1                 |  2.0.0-beta1  |
 
