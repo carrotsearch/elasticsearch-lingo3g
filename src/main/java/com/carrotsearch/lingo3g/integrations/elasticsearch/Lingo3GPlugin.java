@@ -1,5 +1,10 @@
+
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
 import org.elasticsearch.cluster.service.ClusterService;
@@ -13,11 +18,6 @@ import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.watcher.ResourceWatcherService;
 import org.slf4j.LoggerFactory;
-
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Supplier;
 
 /**
  * Elasticsearch extension plugin adding Lingo3G clustering algorithm support to <a
