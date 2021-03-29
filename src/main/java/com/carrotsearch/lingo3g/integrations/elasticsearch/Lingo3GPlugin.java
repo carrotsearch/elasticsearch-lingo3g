@@ -1,10 +1,5 @@
-
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Supplier;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
 import org.elasticsearch.cluster.service.ClusterService;
@@ -17,6 +12,12 @@ import org.elasticsearch.repositories.RepositoriesService;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.watcher.ResourceWatcherService;
+import org.slf4j.LoggerFactory;
+
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
 
 /**
  * Elasticsearch extension plugin adding Lingo3G clustering algorithm support to <a
@@ -24,6 +25,14 @@ import org.elasticsearch.watcher.ResourceWatcherService;
  */
 public class Lingo3GPlugin extends Plugin {
   public static final String PLUGIN_NAME = "elasticsearch-lingo3g";
+
+  public Lingo3GPlugin() {
+    // A hack to initialize slf4j bindings properly. ES sets context
+    // class loader properly when initializing the plugin, not when
+    // creating components.
+    // https://github.com/elastic/elasticsearch/pull/63185
+    hackInitSlf4j();
+  }
 
   @Override
   public Collection<Object> createComponents(
@@ -38,6 +47,7 @@ public class Lingo3GPlugin extends Plugin {
       NamedWriteableRegistry namedWriteableRegistry,
       IndexNameExpressionResolver indexNameExpressionResolver,
       Supplier<RepositoriesService> repositoriesServiceSupplier) {
+
     try {
       Path configPath = environment.configFile();
       Path pluginPath = environment.configFile().resolve(PLUGIN_NAME);
@@ -50,7 +60,10 @@ public class Lingo3GPlugin extends Plugin {
           "Required Lingo3G classes not found (did you copy Lingo3G JARs to the plugin?): "
               + e.getMessage());
     }
-
     return Collections.emptyList();
+  }
+
+  private void hackInitSlf4j() {
+    LoggerFactory.getLogger(this.getClass());
   }
 }
