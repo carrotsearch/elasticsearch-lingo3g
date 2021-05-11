@@ -43,9 +43,6 @@ configure(rootProject) {
         }
 
         pom {
-          name = esplugin.name
-          description = esplugin.description
-
           inceptionYear = "2020"
           artifactId 'elasticsearch-lingo3g'
           licenses {
@@ -71,15 +68,17 @@ configure(rootProject) {
             }
           }
 
-          // TODO: ES 7.10.0 hack: fails if uncommented (can't define one's own because
-          // es build plugin force-adds its own versions).
-          /*
-          url = '...'
+          url = 'https://github.com/carrotsearch/elasticsearch-lingo3g'
           scm {
-            connection = '...'
-            developerConnection = '...'
-            url = '...'
+            connection = 'scm:git:https://github.com/carrotsearch/elasticsearch-lingo3g'
+            developerConnection = 'scm:git:git@github.com:carrotsearch/elasticsearch-lingo3g.git'
+            url = 'https://github.com/carrotsearch/elasticsearch-lingo3g'
           }
+
+          // ES HACK: 7.12.0: es build plugin force-adds its own versions.
+          /*
+          name = esplugin.name
+          description = esplugin.description
            */
         }
       }
