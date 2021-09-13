@@ -1,9 +1,10 @@
 buildscript {
   ext {
     localversions = [
-        es       : "7.13.4",
-        c2plugin : "7.13.4",
-        l3g      : "2.0.0"
+        es       : "7.14.1",
+        c2plugin : "7.14.1",
+        l3g      : "2.0.0",
+        log4j    : "2.11.1"
     ]
   }
 
@@ -19,12 +20,12 @@ buildscript {
 plugins {
   id 'java-library'
   id 'idea'
-  id 'com.diffplug.spotless' version "5.8.2" apply false
+  id 'com.diffplug.spotless' version "5.14.3" apply false
   id 'com.carrotsearch.gradle.opts' version '0.0.6'
 }
 
 apply plugin: 'elasticsearch.esplugin'
-apply plugin: 'elasticsearch.java-rest-test'
+// apply plugin: 'elasticsearch.java-rest-test'
 
 apply from: file('gradle/validation/spotless.gradle')
 
@@ -72,7 +73,7 @@ dependencies {
     exclude group: "com.carrotsearch", module: "hppc"
   })
 
-  implementation("org.apache.logging.log4j:log4j-slf4j18-impl:${versions.log4j}", {
+  implementation("org.apache.logging.log4j:log4j-slf4j18-impl:${localversions.log4j}", {
     exclude group: "org.apache.logging.log4j", module: "log4j-core"
     exclude group: "org.apache.logging.log4j", module: "log4j-api"
     exclude group: "org.slf4j"
@@ -84,8 +85,8 @@ dependencies {
   testImplementation "org.assertj:assertj-core:3.13.2"
 
   // Let the javaRestTest see the classpath of main and tests.
-  javaRestTestImplementation project.sourceSets.main.runtimeClasspath
-  javaRestTestImplementation project.sourceSets.test.runtimeClasspath
+  // javaRestTestImplementation project.sourceSets.main.runtimeClasspath
+  // javaRestTestImplementation project.sourceSets.test.runtimeClasspath
 }
 
 // Set target compatibility

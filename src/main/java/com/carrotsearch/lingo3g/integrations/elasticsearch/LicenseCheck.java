@@ -1,4 +1,3 @@
-
 package com.carrotsearch.lingo3g.integrations.elasticsearch;
 
 import com.carrotsearch.licensing.LicenseException;
