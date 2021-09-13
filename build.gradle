@@ -50,7 +50,7 @@ ext {
 
 esplugin {
   name 'elasticsearch-lingo3g'
-  description "Lingo3G Clustering Algorithm Extension for elasticsearch-carrot2 plugin (Linog3G: ${localversions.l3g}, ES: ${localversions.es} elasticsearch-carrot2: ${localversions.c2plugin})"
+  description "Lingo3G Clustering Algorithm Extension for elasticsearch-carrot2 plugin (Lingo3G: ${localversions.l3g}, ES: ${localversions.es} elasticsearch-carrot2: ${localversions.c2plugin})"
   classname 'com.carrotsearch.lingo3g.integrations.elasticsearch.Lingo3GPlugin'
   extendedPlugins = ['elasticsearch-carrot2']
 }
