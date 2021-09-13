@@ -32,9 +32,10 @@ the version of Lingo3G, Elasticsearch and elasticsearch-carrot2 plugin this
 extension will be compiled against:
 
     localversions = [
-        es       : "7.13.4",
-        c2plugin : "7.13.4",
-        l3g      : "2.0.0"
+        es       : "7.14.1",
+        c2plugin : "7.14.1",
+        l3g      : "2.0.0",
+        log4j    : "2.11.1"
     ]
 
 Then build the plugin:
