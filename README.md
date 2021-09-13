@@ -32,16 +32,16 @@ the version of Lingo3G, Elasticsearch and elasticsearch-carrot2 plugin this
 extension will be compiled against:
 
     localversions = [
-        es       : "7.11.2",
-        c2plugin : "7.11.2",
-        l3g      : "2.0.0-beta1"
+        es       : "7.13.4",
+        c2plugin : "7.13.4",
+        l3g      : "2.0.0"
     ]
 
 Then build the plugin:
 
     ./gradlew clean build
 
-and install in Elasticsearch with (use full path):
+and install in Elasticsearch with (use the full, absolute path):
 
     Linux:
     bin/elasticsearch-plugin install file:/.../(plugin)/build/distributions/elasticsearch-lingo3g-*.zip
@@ -80,6 +80,7 @@ Compatibility
 
 | plugin                | elasticsearch         | Lingo3G       |
 | ---                   |                   --- | ---           |
+| 7.13.4                | 7.13.4                |  2.0.0        |
 | 7.12.0                | 7.12.0                |  2.0.0-beta2  |
 | 7.11.2                | 7.11.2                |  2.0.0-beta1  |
 | 7.7.1                 | 7.7.1                 |  2.0.0-beta1  |

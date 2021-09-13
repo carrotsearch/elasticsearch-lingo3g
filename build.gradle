@@ -1,15 +1,14 @@
 buildscript {
   ext {
     localversions = [
-        es       : "7.12.0",
-        c2plugin : "7.12.0",
-        l3g      : "2.0.0-beta2"
+        es       : "7.13.4",
+        c2plugin : "7.13.4",
+        l3g      : "2.0.0"
     ]
   }
 
   repositories {
     mavenCentral()
-    jcenter()
   }
 
   dependencies {
@@ -82,7 +81,7 @@ dependencies {
   extendedZip group: 'org.carrot2', name: 'elasticsearch-carrot2', version: localversions.c2plugin, ext: 'zip'
   extendedJar group: 'org.carrot2', name: 'elasticsearch-carrot2', version: localversions.c2plugin
 
-  testCompile "org.assertj:assertj-core:3.13.2"
+  testImplementation "org.assertj:assertj-core:3.13.2"
 
   // Let the javaRestTest see the classpath of main and tests.
   javaRestTestImplementation project.sourceSets.main.runtimeClasspath
@@ -146,3 +145,8 @@ tasks.matching { it.name in ["javaRestTest"] }.all {
 
 // Configure publishing.
 apply from: file('gradle/publishing.gradle')
+
+// TODO: ES 7.13.4 hack. We generate our own POM.
+tasks.matching { it.path == ":validateElasticPom" }.all { Task t ->
+  enabled = false
+}
