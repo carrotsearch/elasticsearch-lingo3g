@@ -41,6 +41,10 @@ Then build the plugin:
 
     ./gradlew clean build
 
+To run tests and checks, pass the license location via -Plicense property:
+
+    ./gradlew check -Plicense=[absolute-path]
+
 and install in Elasticsearch with (use full path):
 
     Linux:
