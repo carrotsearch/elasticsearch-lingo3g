@@ -1,9 +1,9 @@
 buildscript {
   ext {
     localversions = [
-        es       : "7.11.2",
-        c2plugin : "7.11.2",
-        l3g      : "2.0.0-beta1"
+        es       : "7.10.2",
+        c2plugin : "7.10.2.2",
+        l3g      : "2.0.0"
     ]
   }
 
@@ -51,7 +51,7 @@ ext {
 
 esplugin {
   name 'elasticsearch-lingo3g'
-  description "Lingo3G Clustering Algorithm Extension for elasticsearch-carrot2 plugin (Linog3G: ${localversions.l3g}, ES: ${localversions.es} elasticsearch-carrot2: ${localversions.c2plugin})"
+  description "Lingo3G Clustering Algorithm Extension for elasticsearch-carrot2 plugin (Lingo3G: ${localversions.l3g}, ES: ${localversions.es} elasticsearch-carrot2: ${localversions.c2plugin})"
   classname 'com.carrotsearch.lingo3g.integrations.elasticsearch.Lingo3GPlugin'
   extendedPlugins = ['elasticsearch-carrot2']
 }
@@ -70,6 +70,7 @@ configurations {
 dependencies {
   lingo3g("com.carrotsearch.lingo3g:lingo3g:${localversions.l3g}", {
     exclude group: "org.carrot2", module: "core"
+    exclude group: "com.carrotsearch", module: "hppc"
   })
 
   implementation("org.apache.logging.log4j:log4j-slf4j18-impl:${versions.log4j}", {
@@ -94,6 +95,12 @@ targetCompatibility = 11
 
 // We don't have unit tests, only integration tests.
 test.enabled = false
+
+// No need to check licenses.
+dependencyLicenses.enabled = false
+licenseHeaders.enabled = false
+loggerUsageCheck.enabled = false
+thirdPartyAudit.enabled = false
 
 // Add plugin configuration files to each testClusters instance.
 // 'extraConfigFile' doesn't allow directories, only files, so we

@@ -27,11 +27,11 @@ final class TestInfra {
   public static final class TestDocument implements Document {
     private final ArrayList<Map.Entry<String, String>> fieldValues = new ArrayList<>();
 
-    public TestDocument(Map<String, String> fields) {
+    TestDocument(Map<String, String> fields) {
       this(fields.entrySet());
     }
 
-    public TestDocument(Collection<Map.Entry<String, String>> fieldValues) {
+    TestDocument(Collection<Map.Entry<String, String>> fieldValues) {
       this.fieldValues.addAll(fieldValues);
     }
 
