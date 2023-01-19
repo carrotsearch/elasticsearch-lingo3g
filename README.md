@@ -50,8 +50,11 @@ and install in Elasticsearch with (use the full, absolute path):
     Windows:
     bin\elasticsearch-plugin install file:///c:/.../(plugin)/build/distributions/elasticsearch-lingo3g-*.zip
 
-The installer will display a popup to request additional permissions - you have 
-to accept this request, otherwise the plugin will not be installed.
+The installer will display a popup to request additional permissions for class loader
+access and user home folder access. You can comment out (or remove) user home folder access - this
+will prevent license scanning there but the plugin will work. Class loader permissions are
+required and have to be accepted.
+
 
 ### Installation from binaries
 
@@ -73,7 +76,7 @@ The plugin will require a valid license file in one of the following locations:
 
 * `${es-home}/config/`
 * `${es-home}/elasticsearch-lingo3g/`
-* Elasticsearch user's home folder
+* Elasticsearch user's home folder (if permissions are given)
 
 
 Compatibility
